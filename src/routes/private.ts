@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import userPrivateRoute from './user/private';
+import authPrivateRoute from './auth/private';
 import { verifyToken } from '../controller/authenticator';
 
 const router = Router();
 
 router.use(verifyToken);
 
-router.use("/user", userPrivateRoute);
+router.use("/auth", authPrivateRoute);
 
 export default router;

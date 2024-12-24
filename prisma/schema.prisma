@@ -39,6 +39,7 @@ model Profile {
   updatedAt DateTime?
   Address   Address?
   User      User      @relation(fields: [userId], references: [id])
+  items Item[]
 }
 
 model User {
@@ -50,4 +51,40 @@ model User {
   updatedAt DateTime?
   Otp       Otp?
   Profile   Profile?
+}
+
+model Item {
+  id Int @id @default(autoincrement())
+  name String
+  price Float
+  description String?
+  stocks Int
+  photos String[]
+  isAvailable Boolean @default(true)
+  isFreeShipping Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  //relationships
+  conditionId Int
+  condition Condition @relation(fields: [conditionId], references: [id])
+  sellerId Int
+  seller Profile @relation(fields: [sellerId], references: [id])
+  categoryId Int
+  category Category @relation(fields: [categoryId], references: [id])
+}
+
+model Condition {
+  id Int @id @default(autoincrement())
+  name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  items Item[]
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  items Item[]
 }
