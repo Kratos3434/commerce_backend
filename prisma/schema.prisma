@@ -60,8 +60,8 @@ model Item {
   description String?
   stocks Int
   photos String[]
-  isAvailable Boolean @default(true)
   isFreeShipping Boolean
+  isAvailable Boolean @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime?
   //relationships
@@ -71,6 +71,7 @@ model Item {
   seller Profile @relation(fields: [sellerId], references: [id])
   categoryId Int
   category Category @relation(fields: [categoryId], references: [id])
+  shippingDetail ShippingDetail?
 }
 
 model Condition {
@@ -87,4 +88,33 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime?
   items Item[]
+}
+
+model ShippingDetail {
+  id Int @id @default(autoincrement())
+  isFreeShipping Boolean
+  shippingFee Float?
+  trackingNumber String
+  shippingDate DateTime
+  instruction String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  itemId Int @unique
+  item Item @relation(fields: [itemId], references: [id])
+  shippingAddress ShippingAddress?
+}
+
+model ShippingAddress {
+  id           Int       @id @default(autoincrement())
+  addressLine1 String
+  addressLine2 String?
+  city         String
+  province     String
+  postalCode   String
+  country      String    @default("Canada")
+  profileId    Int       @unique
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime?
+  shippingDetailId Int @unique
+  shippingDetail ShippingDetail @relation(fields: [shippingDetailId], references: [id])
 }
